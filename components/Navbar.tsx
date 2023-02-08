@@ -2,19 +2,12 @@ import { ReactNode } from "react";
 import {
   Box,
   Flex,
-  Avatar,
   Link,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
   useDisclosure,
   useColorModeValue,
   Stack,
   useColorMode,
-  Center,
   Heading,
   Image,
 } from "@chakra-ui/react";
@@ -51,7 +44,7 @@ const Navbar = () => {
             width={"100%"}
           >
             <Flex alignItems={"center"}>
-              <Image src={"/logo.svg"} maxHeight={"30px"} />
+              <Image alt="Nethermind logo" src={"/logo.svg"} maxHeight={"30px"} />
               <Heading variant={"h3"} fontSize={"xl"}>
                 Commit-Ed
               </Heading>
