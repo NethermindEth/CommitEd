@@ -10,6 +10,7 @@ const Sidebar = () => {
       border={"1px dashed"}
       h={"100%"}
       borderRadius={"10px"}
+      margin="1rem"
     >
       <Heading variant={"h3"} fontSize={"2xl"} mb={"20px"}>
         Commitment Scheme's

@@ -5,14 +5,14 @@ import Links from './Links';
 import { Group } from '@visx/group';
 import { TreeNode } from '../Container/utils';
 
-interface ILinksAndNodes {
+type LinksAndNodesPropType = {
     data: TreeNode;
     sizeWidth: number;
     sizeHeight: number;
     origin: { x: number; y: number; };
 }
 
-export default function LinksAndNodes(props: ILinksAndNodes) {
+const LinksAndNodes: React.FC<LinksAndNodesPropType> = (props) => {
     const { data, sizeWidth, sizeHeight, origin } = props;
     return (
         <Tree
@@ -32,3 +32,5 @@ export default function LinksAndNodes(props: ILinksAndNodes) {
         </Tree>
     )
 }
+
+export default LinksAndNodes;

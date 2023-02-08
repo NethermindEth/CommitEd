@@ -1,23 +1,31 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import getLinkComponent from './getLinkComponent';
+import getLinkComponent, { LinkComponentType } from './getLinkComponent';
+import { HierarchyLink } from '@visx/hierarchy/lib/types';
 
 const stepPercent = 0.5;
 const linkType = 'diagonal';
 let defaultLinkColor = 'rgb(254,110,158,0.6)';
 let defaultStrokeWeight = 1;
 
-export default function Links(props: any) {
+type Datum = {
+    name: string;
+}
+type LinksType = {
+    links: HierarchyLink<Datum>[]
+}
+
+const Links: React.FC<LinksType> = (props: LinksType) => {
     const { links } = props;
 
     const LinkComponent = getLinkComponent({ linkType });
 
     const prevLinks = useRef({ links })
 
-    const [indicesOfChangedLinks, setIndicesOfChangedLinks] = useState([])
+    const [indicesOfChangedLinks, setIndicesOfChangedLinks] = useState<number[]>([])
 
     const [isBlinking, setIsBlinking] = useState(false)
 
-    const triggerBlink = useCallback((indicesOfChangedLinks: any) => {
+    const triggerBlink = useCallback((indicesOfChangedLinks: number[]) => {
         if (!isBlinking) {
             setIsBlinking(true)
             setIndicesOfChangedLinks(indicesOfChangedLinks)
@@ -39,7 +47,7 @@ export default function Links(props: any) {
         prevLinks.current.links = links
     }, [links, isBlinking, indicesOfChangedLinks, triggerBlink])
 
-    return links.map((link: any, index: number) => {
+    const linksArray = links.map((link: HierarchyLink<Datum>, index: number) => {
         let color = defaultLinkColor;
         let strokeWidth = defaultStrokeWeight;
 
@@ -62,13 +70,19 @@ export default function Links(props: any) {
             />
         );
     })
+
+    return (
+        <>
+            {linksArray}
+        </>
+    )
 }
 
-const getIndicesOfChangedLinks = (prevLinks: any, links: any) => {
+const getIndicesOfChangedLinks = (prevLinks: HierarchyLink<Datum>[], links: HierarchyLink<Datum>[]) => {
     if (prevLinks.length !== links.length) {
         return []
     }
-    let indicesOfChangedLinks: any = []
+    let indicesOfChangedLinks = []
     for (let i = 0; i < links.length; i++) {
         if (links[i].source.data.name !== prevLinks[i].source.data.name && links[i].target.data.name !== prevLinks[i].target.data.name) {
             indicesOfChangedLinks.push(i)
@@ -76,3 +90,5 @@ const getIndicesOfChangedLinks = (prevLinks: any, links: any) => {
     }
     return indicesOfChangedLinks;
 }
+
+export default Links;

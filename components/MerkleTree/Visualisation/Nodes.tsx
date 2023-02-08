@@ -1,18 +1,28 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Group } from '@visx/group';
+import { HierarchyPointNode } from '@visx/hierarchy/lib/types';
 
 const defaultStrokeColor = '#03c0dc'
 
-export default function Nodes(props: any) {
+type Datum = {
+    name: string;
+    isExpanded: boolean;
+}
+
+type NodesPropType = {
+    nodes: HierarchyPointNode<Datum>[]
+}
+
+const Nodes: React.FC<NodesPropType> = (props: NodesPropType) => {
     const { nodes } = props;
 
     const prevNodes = useRef({ nodes })
 
-    const [indexOfChangedNodes, setIndexOfChangedNodes]: any = useState([])
+    const [indexOfChangedNodes, setIndexOfChangedNodes] = useState<number[]>([])
 
     const [isBlinking, setIsBlinking] = useState(false)
 
-    const triggerBlink = useCallback((indicesOfChangedLinks: any) => {
+    const triggerBlink = useCallback((indicesOfChangedLinks: number[]) => {
         if (!isBlinking) {
             setIsBlinking(true)
             setIndexOfChangedNodes(indicesOfChangedLinks)
@@ -34,7 +44,7 @@ export default function Nodes(props: any) {
         prevNodes.current.nodes = nodes;
     }, [nodes, triggerBlink])
 
-    return nodes.map((node: any, key: any) => {
+    const nodesList = nodes.map((node: HierarchyPointNode<Datum>, key: number) => {
         const width = 50;
         const height = 20;
 
@@ -66,7 +76,6 @@ export default function Nodes(props: any) {
                     onClick={() => {
                         node.data.isExpanded = !node.data.isExpanded;
                         console.log(node);
-
                     }}
                 />
                 <text
@@ -82,6 +91,12 @@ export default function Nodes(props: any) {
             </Group >
         );
     })
+
+    return (
+        <>
+            {nodesList}
+        </>
+    )
 }
 
 const getTrimmedText = (str: string, noOfStringsToShow: number) => {
@@ -94,7 +109,7 @@ const getTrimmedText = (str: string, noOfStringsToShow: number) => {
     }
 }
 
-const getIndexOfChangedNodes = (prevNodes: any, nodes: any) => {
+const getIndexOfChangedNodes = (prevNodes: HierarchyPointNode<Datum>[], nodes: HierarchyPointNode<Datum>[]) => {
     if (prevNodes.length !== nodes.length) return [];
     const indexOfChangedNodes = [];
     for (let i = 0; i < nodes.length; i++) {
@@ -104,3 +119,5 @@ const getIndexOfChangedNodes = (prevNodes: any, nodes: any) => {
     }
     return indexOfChangedNodes;
 }
+
+export default Nodes;

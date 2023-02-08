@@ -12,7 +12,9 @@ export type VisualisationProps = {
     data: TreeNode;
 };
 
-export default function Visualisation({ data = { name: "" } }: VisualisationProps) {
+const defaultProp = { name: "" };
+
+const Visualisation: React.FC<VisualisationProps> = ({ data = defaultProp }) => {
     const totalWidth = defaultTotalWidth;
     const totalHeight = defaultTotalHeight;
     const margin = defaultMargin
@@ -45,3 +47,5 @@ export default function Visualisation({ data = { name: "" } }: VisualisationProp
         </div>
     );
 }
+
+export default Visualisation;

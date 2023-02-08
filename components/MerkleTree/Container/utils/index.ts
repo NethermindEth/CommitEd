@@ -2,12 +2,12 @@ const Hashes = require('jshashes')
 
 const SHA1 = new Hashes.SHA1();
 
-export interface TreeNode {
+export type TreeNode = {
     name: string;
     children?: TreeNode[];
 }
 
-interface LeafObject { 
+export type LeafObject = { 
     name:string
 }
 
